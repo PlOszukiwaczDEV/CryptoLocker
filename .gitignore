@@ -3,3 +3,6 @@ t*.txt
 
 # ignore some cryptolocker unfinetszed
 cryptlocker_cli_password.py
+
+# ignore the key
+*.key
