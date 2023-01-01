@@ -51,9 +51,9 @@ if __name__ == "__main__":
     parser.add_argument("-g", "--generate-key", dest="generate_key",
                         help="Generate a new key")
     parser.add_argument("-e", "--encrypt",
-                        help="Whether to encrypt the file, only -e or -d can be specified.")
+                        help="Whether to encrypt the file")
     parser.add_argument("-d", "--decrypt",
-                        help="Whether to decrypt the file, only -e or -d can be specified.")
+                        help="Whether to decrypt the file")
     parser.add_argument("-k", "--key-file", 
                          help="Key to load")
 
