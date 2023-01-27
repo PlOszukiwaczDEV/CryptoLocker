@@ -19,14 +19,15 @@ pip install cryptography
 pip install tkinter
 ```
 4. Run
-#### Cryptolocker
-```
-python cryptolocker.py
-```
+
 #### Cryptolocker Cli
 ```
 python cryptolocker_cli.py
 ```
+
+## Todo
+Cryptolocker GUI
+Add restore feature
 
 ## Author
 * PlOszukiaczDEV - All
