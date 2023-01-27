@@ -20,11 +20,6 @@ pip install tkinter
 ```
 4. Run
 
-#### Cryptolocker Cli
-```
-python cryptolocker_cli.py
-```
-
 ## Todo
 Cryptolocker GUI
 Add restore feature
