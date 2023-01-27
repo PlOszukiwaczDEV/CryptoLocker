@@ -1,8 +1,8 @@
 # ignore all test files
 t*.txt
 
-# ignore some cryptolocker unfinetszed
-cryptlocker_cli_password.py
-
 # ignore the key
 *.key
+
+# ignore old versions
+old/

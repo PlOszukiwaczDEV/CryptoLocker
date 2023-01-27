@@ -1,80 +1,83 @@
+# imports
 from cryptography.fernet import Fernet
 import base64
+import argparse
 
-def write_key(file):
+
+# def restore(restore_key):
+#     """
+#     Restore the key
+#     """
+#     with open("restored_key.key", "wb") as f:
+#         f.write(base64.b85decode(restore_key))
+#     del restore_key
+
+def write_key(key_file):
     """
-        Write the key
+    Write the key
     """
     key = Fernet.generate_key()
-    with open(file, "wb") as key_file:
-        key_file.write(key)
-
-
+    with open(key_file, "wb") as f:
+        f.write(key)
+    # generate the restore key
+    restore_key = base64.b85encode(key)
+    # print("Your restore key:")
+    del key
+    # del restore_key
 
 def load_key(key_file):
     """
-        Loads the key
+    Load the key
     """
     return open(key_file, "rb").read()
 
-def encrypt(filename, key_file):
+def encrypt(file, key_file):
     """
-    Given a filename (str) and key (bytes), it encrypts the file and write it
+    Encrypt the file
     """
-    f = Fernet(load_key(key_file))
-    with open(filename, "rb") as file:
-        # read all file data
-        file_data = file.read()
-    # encrypt data
-    encrypted_data = f.encrypt(file_data)
-    # write the encrypted file
-    with open(filename, "wb") as file:
-        file.write(encrypted_data)
+    key = Fernet(load_key(key_file))
+    with open(file, "rb") as f:
+        file_content = f.read()
+    file_content_enc = key.encrypt(file_content)
+    with open(file, "wb") as f:
+        f.write(file_content_enc)
+    del key
+    del file_content
+    del file_content_enc
 
-def decrypt(filename, key_file): 
+def decrypt(file, key_file):
     """
-    Given a filename (str) and key (bytes), it decrypts the file and write it
+    Decrypt the file
     """
-    f = Fernet(load_key(key_file))
-    with open(filename, "rb") as file:
-        # read the encrypted data
-        encrypted_data = file.read()
-    # decrypt data
-    decrypted_data = f.decrypt(encrypted_data)
-    # write the original file
-    with open(filename, "wb") as file:
-        file.write(decrypted_data)
+    key = Fernet(load_key(key_file))
+    with open(file, "rb") as f:
+        file_content = f.read()
+    file_content_dec = key.decrypt(file_content)
+    with open(file, "wb") as f:
+        f.write(file_content_dec)
+    del key
+    del file_content
+    del file_content_dec
+
 
 if __name__ == "__main__":
-    import argparse
-    parser = argparse.ArgumentParser(description="Cryptolocker by PlOszukiwacz")
-    parser.add_argument("-g", "--generate-key", dest="generate_key",
-                        help="Generate a new key")
-    parser.add_argument("-e", "--encrypt",
-                        help="Whether to encrypt the file")
-    parser.add_argument("-d", "--decrypt",
-                        help="Whether to decrypt the file")
-    parser.add_argument("-k", "--key-file", 
-                         help="Key to load")
+    # args
+    parser = argparse.ArgumentParser(description="PlOszukiwacz Cryptolocker")
+    parser.add_argument("-g", "--generate-key", help="Generate the key")
+    parser.add_argument("-k", "--key-file", help="The key file")
+    parser.add_argument("-e", "--encrypt", help="File to encrypt")
+    parser.add_argument("-d", "--decrypt", help="File to decrypt")
+    # parser.add_argument("-r", "--restore", help="Restore the key")
 
+    # parse args
     args = parser.parse_args()
-    generate_key = args.generate_key
+    gen_key = args.generate_key
     key_file = args.key_file
+    enc = args.encrypt
+    dec = args.decrypt
+    # restore_key = args.restore
 
-    if generate_key:
-        write_key(generate_key)
-        print("Key Generated!")
-        exit()
-    # load the key
-    if key_file:
-        key = load_key(key_file)
-
-    encrypt_ = args.encrypt
-    decrypt_ = args.decrypt
-
-    if encrypt_ and decrypt_:
-        print("Please specify whether you want to encrypt the file or decrypt it.")
-    elif encrypt_:
-        encrypt(encrypt_, key_file)
-    elif decrypt_:
-        decrypt(decrypt_, key_file)
+    if gen_key: write_key(gen_key)
+    elif enc: encrypt(enc, key_file)
+    elif dec: decrypt(dec, key_file)
+    # elif restore_key: restore(restore_key)
