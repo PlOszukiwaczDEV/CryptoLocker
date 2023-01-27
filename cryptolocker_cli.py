@@ -4,13 +4,13 @@ import base64
 import argparse
 
 
-# def restore(restore_key):
-#     """
-#     Restore the key
-#     """
-#     with open("restored_key.key", "wb") as f:
-#         f.write(base64.b85decode(restore_key))
-#     del restore_key
+def restore(restore_key):
+    """
+    Restore the key
+    """
+    with open("restored_key.key", "wb") as f:
+        f.write(base64.b85decode(restore_key))
+    del restore_key
 
 def write_key(key_file):
     """
@@ -21,9 +21,10 @@ def write_key(key_file):
         f.write(key)
     # generate the restore key
     restore_key = base64.b85encode(key)
-    # print("Your restore key:")
+    print("Your restore key:")
+    print(str(restore_key, "utf-8"))
     del key
-    # del restore_key
+    del restore_key
 
 def load_key(key_file):
     """
@@ -67,7 +68,7 @@ if __name__ == "__main__":
     parser.add_argument("-k", "--key-file", help="The key file")
     parser.add_argument("-e", "--encrypt", help="File to encrypt")
     parser.add_argument("-d", "--decrypt", help="File to decrypt")
-    # parser.add_argument("-r", "--restore", help="Restore the key")
+    parser.add_argument("-r", "--restore", help="Restore the key")
 
     # parse args
     args = parser.parse_args()
@@ -75,9 +76,9 @@ if __name__ == "__main__":
     key_file = args.key_file
     enc = args.encrypt
     dec = args.decrypt
-    # restore_key = args.restore
+    restore_key = args.restore
 
     if gen_key: write_key(gen_key)
     elif enc: encrypt(enc, key_file)
     elif dec: decrypt(dec, key_file)
-    # elif restore_key: restore(restore_key)
+    elif restore_key: restore(restore_key)

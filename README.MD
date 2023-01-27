@@ -20,6 +20,24 @@ pip install tkinter
 ```
 4. Run
 
+### Cryptolocker CLI
+* Genereate key
+```
+python cryptolocker_cli.py -g <key-file-name>
+```
+* Encrypt a file
+```
+python cryptolocker_cli.py -k <key-file-name> -e <file-to-encrypt>
+```
+* Decrypt a file
+```
+python cryptolocker_cli.py -k <key-file-name> -d <file-to-decrypt>
+```
+* Restore
+```
+python cryptolocker_cli.py -r '<restore-key>'
+```
+
 ## Todo
 Cryptolocker GUI
 Add restore feature
